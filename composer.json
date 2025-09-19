@@ -2,6 +2,7 @@
     "name": "oskar-koli/kirby-litespeed",
     "type": "kirby-plugin",
     "license": "MIT",
+    "description": "Litespeed cache plugin for Kirby CMS",
     "autoload": {
         "psr-4": {
             "OskarKoli\\KirbyLitespeed\\": "src/"
@@ -15,7 +16,7 @@
     ],
     "require-dev": {
         "getkirby/composer-installer": "^1.1",
-        "getkirby/cms": "^5.1"
+        "getkirby/cms": "^5.0"
     },
     "config": {
         "optimize-autoloader": true,
