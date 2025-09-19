@@ -14,8 +14,10 @@
             "email": "oskar@koli.io"
         }
     ],
+    "require": {
+        "getkirby/composer-installer": "^1.1"
+    },
     "require-dev": {
-        "getkirby/composer-installer": "^1.1",
         "getkirby/cms": "^5.0"
     },
     "config": {
