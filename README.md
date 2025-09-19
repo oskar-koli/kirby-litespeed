@@ -1,66 +1,104 @@
 # Kirby Litespeed Plugin
+
 [![Packagist Version](https://img.shields.io/packagist/v/oskar-koli/kirby-litespeed)](https://packagist.org/packages/oskar-koli/kirby-litespeed)
 
 Adds support for Litespeed page caching to Kirby CMS.
 
 ## Installation & Configuration
 
-Install the plugin using composer:
-```
+### Installation
+
+```bash
 composer require oskar-koli/kirby-litespeed
 ```
 
-Configure the page cache to use it:
-```php
-'cache' => [
-    'pages' => [
-        'type'   => 'litespeed',
-        'active' => true
-    ]
-]
-```
-Note: The litespeed cache can only be used for pages and will *not* work as the driver for any other kind of cache.
+### Configuration
 
-## Caching logic
-The caching logic is handled the same way as any other Kirby cache driver. So any use of cookies will for example stop a page from being cached. You can also control if a page should be cached and for how long using the 'ignore' and 'duration' options:
 ```php
+// site/config/config.php
 'cache' => [
     'pages' => [
-        'type'   => 'litespeed',
+        'type' => 'litespeed',
         'active' => true,
+
+        // Optional:
 
         // Controls if page should be cached
         'ignore' => fn ($page) => $page->title()->value() === 'Do not cache me',
-        
-        // Max caching duration in seconds
-        'duration' => fn ($page) => $page->slug() == 'a' ? 172800 : 600
+
+        // Controls how long Litespeed caches the page (in seconds, default = 172800)
+        // The default duration is 2 days (172800 seconds)
+        'duration' => fn ($page) => $page->slug() == 'slug' ? 172800 : 600
     ]
 ]
 ```
 
-## Purging using CLI
-You can manually clear the cache using the Kirby CLI:
+> **Note:** The Litespeed cache can only be used for pages and will *not* work as the driver for any other kind of cache.
+
+## Caching Logic
+
+The caching logic is handled the same way as any other Kirby cache driver. This means among other things that:
+
+- Any changes made in the Panel will cause the whole cache to be purged
+- Any use of cookies will prevent the page from being cached
+
+> **Note:** The default cache duration is 2 days
+
+## .htaccess Configuration
+
+**Important:** This plugin does not modify the `.htaccess` automatically. You need to enable Litespeed caching manually by adding the following configuration:
+
+```apache
+<IfModule LiteSpeed>
+    RewriteEngine on
+    CacheLookup on
+    RewriteRule .* - [E=Cache-Control:no-autoflush]
+    
+    # Ignore some common query parameters
+    CacheKeyModify -qs:fbclid
+    CacheKeyModify -qs:gclid
+    CacheKeyModify -qs:utm*
+    CacheKeyModify -qs:_ga
+</IfModule>
+```
+
+## CLI Cache Purging
+
+You can manually clear the cache using Kirby CLI:
+
 ```bash
 kirby clear:cache pages
 ```
 
 This works by making an HTTP request to a route on the website which triggers the Litespeed server to purge the cache.
 
-For this to work you have to define the purge-token in the config.php:
+For CLI purging to work, you need to define a purge token in your `config.php`:
+
 ```php
 // Token used to authenticate the REST call which purges the cache
-'oskar-koli.kirby-litespeed.purge-token' => "Some secure token"
+'oskar-koli.kirby-litespeed.purge-token' => 'your-secure-token-here'
 ```
 
-In addition, plugin needs to know the url of the site:
+
+Additionally, the plugin  needs to know the URL of your site. You have three options:
+
+#### Option 1: Plugin specific option
 ```php
 'oskar-koli.kirby-litespeed.site-url' => 'https://example.com'
 ```
-or else pass the targer url as an environment variable:
+
+#### Option 2: Environment variable
 ```bash
 LITESPEED_SITE_URL="https://example.com" kirby clear:cache pages
 ```
-If neither one is present, then `site()->url()` is used which only works in CLI if the url option is set:
+
+#### Option 3: Kirby's URL option
+If none of these are set, the plugin will fall back to `site()->url()`. <br/>
+For this to work in CLI, the `url` option has to be set:
 ```php
 'url' => 'https://example.com'
 ```
+
+## Is the plugin production ready?
+
+The plugin is in use in production on a couple smaller websites and everything is working smoothly. That being said, there might still be some edge cases that which might cause issues on more complex websites. Please submit an bug report if you face any issues!
