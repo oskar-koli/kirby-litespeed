@@ -10,7 +10,8 @@ use OskarKoli\KirbyLitespeed\LitespeedCache;
 
 Kirby::plugin('oskar-koli/kirby-litespeed', [
     'options' => [
-        'purge-token' => null
+        'purge-token' => null,
+        'default-duration' => 172800
     ],
     'hooks' => [
 

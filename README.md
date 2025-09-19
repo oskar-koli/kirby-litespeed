@@ -20,14 +20,18 @@ Configure the page cache to use it:
 Note: The litespeed cache can only be used for pages and will *not* work as the driver for any other kind of cache.
 
 ## Caching logic
-The caching logic is handled the same way as any other Kirby cache driver. So any use of cookies will for example stop a page from being cached. You can also control which pages are cached using the 'ignore' option:
-
+The caching logic is handled the same way as any other Kirby cache driver. So any use of cookies will for example stop a page from being cached. You can also control if a page should be cached and for how long using the 'ignore' and 'duration' options:
 ```php
 'cache' => [
     'pages' => [
         'type'   => 'litespeed',
         'active' => true,
-        'ignore' => fn ($page) => $page->title()->value() === 'Do not cache me'
+
+        // Controls if page should be cached
+        'ignore' => fn ($page) => $page->title()->value() === 'Do not cache me',
+        
+        // Max caching duration in seconds
+        'duration' => fn ($page) => $page->slug() == 'a' ? 172800 : 600
     ]
 ]
 ```

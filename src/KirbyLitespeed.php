@@ -10,6 +10,14 @@ class KirbyLitespeed {
     }
 
     public static function cache(Page $page) {
-        header('X-LiteSpeed-Cache-Control: public,max-age=172800');
+        $defaultDuration = option('oskar-koli.kirby-litespeed.default-duration', 172800); // Two days as fallback
+        $durationCallable = option('cache.pages.duration');
+        if (is_callable($durationCallable)) {
+            header('X-LiteSpeed-Cache-Control: public,max-age=' . $durationCallable($page));
+        }
+        else {
+            header('X-LiteSpeed-Cache-Control: public,max-age=' . $defaultDuration);
+        }
+        
     }
 }
