@@ -1,5 +1,7 @@
 # Kirby Litespeed Plugin
-Adds support for Litespeed page caching.
+![Packagist Version](https://img.shields.io/packagist/v/oskar-koli/kirby-litespeed)
+
+Adds support for Litespeed page caching to Kirby CMS.
 
 ## Installation & Configuration
 
