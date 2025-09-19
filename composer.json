@@ -1,0 +1,26 @@
+{
+    "name": "oskar-koli/kirby-litespeed",
+    "type": "kirby-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "OskarKoli\\KirbyLitespeed\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oskar Koli",
+            "email": "oskar@koli.io"
+        }
+    ],
+    "require-dev": {
+        "getkirby/composer-installer": "^1.1",
+        "getkirby/cms": "^5.1"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "getkirby/composer-installer": true
+        }
+    }
+}
