@@ -4,7 +4,7 @@
 
 Adds support for using Litespeed's LSCache for page caching in Kirby CMS.
 
-Kirby's built in caching still requires Kirby to boot for the cached pages to be returned, which results in even cached requests usually taking at 150-300ms on shared hosting. Using this plugin Kirby doesn't have to be booted when a cached page is hit, resulting in 70ms or faster response times.
+Kirby's built in caching still requires Kirby to boot for the cached pages to be returned, which results in even cached requests usually taking at least 150-300ms on shared hosting. Using this plugin Kirby doesn't have to be booted when a cached page is hit, resulting in 70ms or faster response times.
 
 ## Installation & Configuration
 
