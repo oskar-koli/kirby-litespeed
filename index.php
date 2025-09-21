@@ -18,7 +18,7 @@ Kirby::plugin('oskar-koli/kirby-litespeed', [
         'page.render:after' => function (string $contentType, array $data, string $html, \Kirby\Cms\Page $page) {
             if ($contentType == 'html') {
                 $cache = kirby()->cache("pages");
-                if ($cache instanceof LitespeedCache && $cache->enabled()) {
+                if ($cache instanceof LitespeedCache) {
                     // Note: Taken from Page::render
                     $versionId ??= VersionId::$render;
                     $versionId ??= $page->renderVersionFromRequest();

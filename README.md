@@ -33,7 +33,7 @@ composer require oskar-koli/kirby-litespeed
         // Controls if page should be cached
         'ignore' => fn ($page) => $page->title()->value() === 'Do not cache me',
 
-        // Controls how long Litespeed caches the page (in seconds, default = 172800)
+        // Controls how long Litespeed caches the page (in seconds)
         // The default duration is 2 days (172800 seconds)
         'duration' => fn ($page) => $page->slug() == 'slug' ? 172800 : 600
     ]
@@ -42,18 +42,23 @@ composer require oskar-koli/kirby-litespeed
 
 > **Note:** The Litespeed cache can only be used for pages and will *not* work as the driver for any other kind of cache.
 
-## Caching Logic
+## Caching & Purging Logic
 
-The caching logic is handled the same way as any other Kirby cache driver. This means among other things that:
+A page is cached as long as the request
+- Is a GET or HEAD request
+- The content type is HTML
+- Doesn't use any cookies (e.g. doesn't use `kirby()->user()`, `Cookie:set` or `Cookie:get`)
+- Doesn't contain `Authorization` headers
 
-- Any changes made in the Panel will cause the whole cache to be purged
-- Any use of cookies will prevent the page from being cached
+For more details see `\Kirby\Cms\Page::isCacheable`.
 
-> **Note:** The default cache duration is 2 days
+The cache is purged when
+- Kirby requests a purge, e.g. when any edits are made in the Panel (this causes a full purge)
+- The max-age of a specific page's cache is reached (handled by Litespeed)
 
 ## .htaccess Configuration
 
-**Important:** This plugin does not modify the `.htaccess` automatically. You need to enable Litespeed caching manually by adding the following configuration:
+The plugin does not modify the `.htaccess` automatically. You need to enable Litespeed caching manually by for example adding the following configuration:
 
 ```apache
 <IfModule LiteSpeed>
@@ -85,7 +90,7 @@ For CLI purging to work, you need to define a purge token in your `config.php`:
 // Token used to authenticate the REST call which purges the cache
 'oskar-koli.kirby-litespeed.purge-token' => 'your-secure-token-here'
 ```
-
+You can for example generate the token by running `openssl rand -hex 32`.
 
 Additionally, the plugin  needs to know the URL of your site. You have three options:
 
