@@ -9,10 +9,9 @@ use Kirby\Http\Remote;
 class LitespeedCache extends Cache {
     public function flush(): bool {
         if (kirby()->request()->cli()) {
-
-            
             $target_url = kirby()->environment()->get("LITESPEED_SITE_URL", 
-                option('oskar-koli.kirby-litespeed.site-url', site()->url()));
+                option('oskar-koli.kirby-litespeed.site-url', site()->url())
+            );
             if (!$target_url || $target_url == '/') {
                 throw new Exception('You either have to pass the LITESPEED_SITE_URL environment variable or set the \'url\' config option for purging to work through the CLI!');
             }
