@@ -10,7 +10,7 @@ Kirby's built in caching still requires Kirby to boot for the cached pages to be
 
 ### Requirements
 
-- Kirby CMS ^5 (Might work on lower version?)
+- Kirby CMS ^5
 - Litespeed server (The site will still work without a Litespeed server, but then this plugin does nothing)
 
 ### Installation
