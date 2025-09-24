@@ -2,7 +2,7 @@
 
 [![Packagist Version](https://img.shields.io/packagist/v/oskar-koli/kirby-litespeed)](https://packagist.org/packages/oskar-koli/kirby-litespeed)
 
-Adds support for using Litespeed's LSCache for page caching in Kirby CMS.
+A Kirby CMS plugin which adds support for caching pages using Litespeed's LSCache.
 
 Kirby's built in caching still requires Kirby to boot for the cached pages to be returned, which results in even cached requests usually taking at least 150ms on shared hosting. Using this plugin Kirby doesn't have to be booted when a cached page is hit, resulting in 70ms or faster response times.
 
