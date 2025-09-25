@@ -44,17 +44,13 @@ composer require oskar-koli/kirby-litespeed
 
 ## Caching & Purging Logic
 
-A page is cached as long as the request
-- Is a GET or HEAD request
-- The content type is HTML
-- Doesn't use any cookies (e.g. doesn't use `kirby()->user()`, `Cookie:set` or `Cookie:get`)
-- Doesn't contain `Authorization` headers
+LSCache's public cache is the only one used, the private cache is not supported.
 
-For more details see `\Kirby\Cms\Page::isCacheable`.
+A page is cached following the same rules as described in [Kirby's documentation.](https://getkirby.com/docs/guide/cache#caching-pages__automatic-cacheability-detection)
 
 The cache is purged when
 - Kirby requests a purge, e.g. when any edits are made in the Panel (this causes a full purge)
-- The max-age of a specific page's cache is reached (handled by Litespeed)
+- When Litespeed decides to purge a cache, e.g. when the max-age has been reached.
 
 ## .htaccess Configuration
 
